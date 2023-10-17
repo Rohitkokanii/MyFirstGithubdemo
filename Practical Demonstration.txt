@@ -1,0 +1,529 @@
+https://www.w3schools.com/sql/sql_null_values.asp
+Some of The Most Important SQL Commands
+1)	SELECT - extracts data from a database
+2)	UPDATE - updates data in a database
+3)	DELETE - deletes data from a database
+4)	INSERT INTO - inserts new data into a database
+5)	CREATE DATABASE - creates a new database
+6)	ALTER DATABASE - modifies a database
+7)	CREATE TABLE - creates a new table
+8)	ALTER TABLE - modifies a table
+9)	DROP TABLE - deletes a table
+10)	CREATE INDEX - creates an index (search key)
+11)	DROP INDEX - deletes an index
+
+1. Creating database tables and using data types. 
+    • Create table 
+    CREATE TABLE Persons (
+          PersonID int,
+          LastName varchar(255),
+          FirstName varchar(255),
+          Address varchar(255),
+          City varchar(255)
+          );
+
+    • Modify table 
+   ALTER TABLE Persons
+   ADD Email varchar(255);
+   
+   ALTER TABLE Persons 
+   DROP COLUMN Email;
+
+   ALTER TABLE Persons
+   ADD DateOfBirth date;
+
+  Change data type examples 
+   ALTER TABLE Persons
+   ALTER COLUMN DateOfBirth year;
+
+    • Drop table 
+
+    DROP TABLE Persons;
+
+2. Practical Based on Data Manipulation. 
+   • Adding data with Insert 
+    INSERT INTO Persons (PersonID, LastName,FirstName, Address, City)
+    VALUES (‘101’, 'Tendulkar', 'Sachin', 'M G Road’, 'Jalgaon');
+    VALUES (101, "Tendulkar", "Sachin", "M G Road", "Jalgaon");
+
+    INSERT INTO Persons (PersonID, LastName,FirstName, Address, City)
+    VALUES (102, “Ganguli”, “Saurabh”, “M G Colony”, “Jalna”);
+    
+    INSERT INTO Persons (PersonID, LastName,FirstName, Address, City)
+    VALUES (103, “Shikhar”, “Dhavan”, “New Home Colony”, “Aurangabad”);
+
+
+
+VALUES (106, "Ravindra", "Jadeja", "ICC Colony", "Nagpur"),
+    VALUES (107, "Mahendra", "Dhoni", "Housing Society", "Ranchi"),
+    VALUES (103, "Anil", "Kumble", "Seashore Point", "Worli");
+
+    INSERT INTO Persons 
+    VALUES (104, “Bhuvaneshwar”, “Kumar”, “C T College”, “Beed”);
+
+    INSERT INTO Persons 
+    VALUES (105, “Harbhajan”, “Singh”, “Golani Market”, “Latur”);
+
+    INSERT INTO Persons 
+    VALUES (‘106’, 'Ravindra', 'Jadeja', 'ICC Colony’, 'Nagpur');
+
+    INSERT INTO Persons 
+    VALUES (‘107’, 'Mahendra', 'Dhoni', 'Housing Society’, 'Ranchi');
+
+    INSERT INTO Persons 
+    VALUES (‘103’, 'Anil', 'Kumble', 'Seashore Point’, 'Worli');
+
+    INSERT INTO Persons 
+    VALUES (‘103’, 'Javagal', 'Srinath', 'New Colony’, 'Dhule');
+
+    INSERT INTO Persons 
+    VALUES (‘103’, 'Yuvraj', 'Singh', 'Old Colony’, 'Mumbai');
+
+   • Modify data with Update 
+   UPDATE Persons 
+   SET Address = 'M G Colony', City= 'Bhusawal'
+   WHERE PersonID = 101;
+   • Deleting records with Delete 
+   DELETE FROM Persons WHERE PersonID='102’;  
+
+3. Practical Based on Implementing the Constraints. 
+    • NULL and NOT NULL
+
+    SELECT column_names
+    FROM table_name
+    WHERE column_name IS NULL; 
+
+
+    SELECT column_names
+    FROM table_name
+    WHERE column_name IS NOT NULL; 
+
+
+    • Primary Key Constraint 
+SQL PRIMARY KEY Constraint The PRIMARY KEY constraint uniquely identifies each record in a table. 
+Primary keys must contain UNIQUE values, and cannot contain NULL values. 
+A table can have only ONE primary key; and in the table, this primary key can consist of single or multiple columns (fields).
+PRIMARY Key: 
+A primary key is a field in a table which uniquely identifies each row/record in a database table.  
+Primary keys must contain unique values. 
+A primary key column cannot have NULL values. 
+A table can have only one primary key, which may consist of single or multiple fields. 
+When multiple fields are used as a primary key, they are called a composite key. 
+If a table has a primary key defined on any field(s), then you can not have two records having the same value of that field(s). 
+
+Create Primary Key:
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);  MySQL
+OR
+CREATE TABLE Persons (
+    ID int NOT NULL PRIMARY KEY,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+OR
+CREATE TABLE Persons (
+    ID int NOT NULL,
+
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+);
+
+To create a PRIMARY KEY constraint on the "ID" column when the table is already created, use the following SQL:
+ALTER TABLE Persons
+ADD PRIMARY KEY (ID);
+
+ALTER TABLE Demo1  
+   ADD CONSTRAINT PK_PersonID PRIMARY KEY (PersonID);
+
+
+ALTER TABLE Persons
+ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+
+ALTER TABLE Persons
+DROP CONSTRAINT PK_Person;
+
+    • Foreign Key Constraint 
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables. A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+CREATE TABLE Student (
+    RollNo int NOT NULL PRIMARY KEY,
+    Name int NOT NULL,
+    PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+);
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+
+ALTER TABLE Orders
+ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+Constraint on multiple column
+ALTER TABLE Orders
+ADD CONSTRAINT FK_PersonOrder
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+Drop Constraint
+ 
+Drop ALTER TABLE Orders
+DROP CONSTRAINT FK_PersonOrder;
+
+****************************************************************************
+    • Unique Constraint 
+
+The UNIQUE constraint ensures that all values in a column are different.
+Both the UNIQUE and PRIMARY KEY constraints provide a guarantee for uniqueness for a column or set of columns.
+ A PRIMARY KEY constraint automatically has a UNIQUE constraint. However, you can have many UNIQUE constraints per table, 
+but only one PRIMARY KEY constraint per table.
+
+CREATE TABLE Persons (
+    ID int NOT NULL UNIQUE,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+
+To name a UNIQUE constraint, and to define a UNIQUE constraint on multiple columns, use the following SQL syntax:
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+
+ALTER TABLE Persons
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+ALTER TABLE Persons
+DROP CONSTRAINT UC_Person;
+
+    • Check Constraint 
+The CHECK constraint is used to limit the value range that can be placed in a column. 
+If you define a CHECK constraint on a column it will allow only certain values for this column. 
+If you define a CHECK constraint on a table it can limit the values in certain columns based on values in other columns in the row.
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int CHECK (Age>=18)
+);
+
+To allow naming of a CHECK constraint, and for defining a CHECK constraint on multiple columns, use the following SQL syntax:
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Jalgaon')
+);
+
+To create a CHECK constraint on the "Age" column when the table is already created, use the following SQL:
+
+ALTER TABLE Persons
+ADD CHECK (Age>=18);
+
+To allow naming of a CHECK constraint, and for defining a CHECK constraint on multiple columns, use the following SQL syntax:
+
+ALTER TABLE Persons
+ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Jalgaon');
+
+To drop a CHECK constraint, use the following SQL:
+
+ALTER TABLE Persons
+DROP CONSTRAINT CHK_PersonAge;
+
+
+    • Default Constraint 
+The DEFAULT constraint is used to set a default value for a column. The default value will be added to all new records, if no other value is specified.
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255) DEFAULT 'Jalgaon'
+);
+To create a DEFAULT constraint on the "City" column when the table is already created, use the following SQL:
+ALTER TABLE Persons
+ADD CONSTRAINT df_City
+DEFAULT 'Jalgaon' FOR City;
+To drop a DEFAULT constraint, use the following SQL:
+
+ALTER TABLE Persons
+ALTER COLUMN City DROP DEFAULT;
+
+4. Practical for Retrieving Data Using following clauses. 
+    • Simple select clause
+1)	SELECT Country FROM Customers;   
+2)	SELECT DISTINCT Country FROM Customers; 
+3)	SELECT COUNT(DISTINCT Country) FROM Customers;
+4)	SELECT Count(*) AS DistinctCountries          
+      FROM (SELECT DISTINCT Country FROM Customers);
+5)	SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+6)	SELECT * FROM Customers
+WHERE Country='Mexico';
+
+7)	SELECT * FROM Customers
+WHERE CustomerID=1;
+
+= Equal, > GT, < LT, >= GT or Equal, <= LT or Equal, <> Not Equal to in some version it is !=, BETWEEN  between certain range, LIKE Search for pattern, IN to specify multiple possible values for columns 
+The SQL AND, OR and NOT Operators
+The WHERE clause can be combined with AND, OR, and NOT operators.
+The AND and OR operators are used to filter records based on more than one condition:
+•	The AND operator displays a record if all the conditions separated by AND are TRUE.
+•	The OR operator displays a record if any of the conditions separated by OR is TRUE.
+•	The NOT operator displays a record if the condition(s) is NOT TRUE.
+AND Syntax:  
+   SELECT column1, column2, ...
+   FROM table_name
+   WHERE condition1 AND condition2 AND condition3 ...;
+   
+SELECT * FROM Customers
+   WHERE Country='Germany' AND City='Berlin';
+
+OR syntax:
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...;
+
+SELECT * FROM Customers
+WHERE City='Berlin' OR City='München';
+
+SELECT * FROM Customers
+WHERE Country='Germany' OR Country='Spain'
+
+NOT syntax: 
+     SELECT column1, column2, ...
+FROM table_name
+WHERE NOT condition;
+
+     SELECT * FROM Customers
+WHERE NOT Country='Germany';
+
+Combining AND, OR and NOT operators
+The following SQL statement selects all fields from "Customers" where country is "Germany" AND city must be "Berlin" OR "München" (use parenthesis to form complex expressions):
+ SELECT * FROM Customers
+ WHERE Country='Germany' AND (City='Berlin' OR City='München');
+
+The following SQL statement selects all fields from "Customers" where country is NOT "Germany" and NOT "USA":
+
+ SELECT * FROM Customers
+ WHERE NOT Country='Germany' AND NOT Country='USA';
+
+4. Accessing specific data with Where 
+    • Ordered By 
+      The SQL ORDER BY Keyword, 
+      The ORDER BY keyword is used to sort the result-set in ascending or descending       order. The ORDER BY keyword sorts the records in ascending order by default. To      sort the records in descending order, use the DESC keyword.
+SELECT * FROM Customers
+ORDER BY Country;
+
+SELECT * FROM Customers
+ORDER BY Country DESC;
+
+SELECT * FROM Customers
+ORDER BY Country, CustomerName;   order by customername in same country.
+
+SELECT * FROM Customers
+ORDER BY Country ASC, CustomerName DESC;
+
+    • Distinct 
+
+1)	SELECT DISTINCT Country FROM Customers; 
+2)	SELECT COUNT(DISTINCT Country) FROM Customers;
+3)	SELECT Count(*) AS DistinctCountries
+      FROM (SELECT DISTINCT Country FROM Customers);
+
+    • Group By 
+The SQL GROUP BY Statement
+The GROUP BY statement groups rows that have the same values into summary rows, like "find the number of customers in each country".
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+ORDER BY column_name(s);
+
+The following SQL statement lists the number of customers in each country:
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country;
+
+The following SQL statement lists the number of customers in each country, sorted high to low:
+SELECT COUNT(CustomerID),Country
+FROM Customers
+GROUP BY Country
+ORDER BY COUNT(CustomerID) DESC;
+
+
+5. Practical Based on Aggregate Functions. 
+
+The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the result-set by one or more columns
+    • AVG 
+The following SQL statement finds the average price of all products:
+SELECT AVG(Price)
+FROM Products;
+
+    • COUNT 
+The COUNT() function returns the number of rows that matches a specified criterion.
+SELECT COUNT(ProductID)
+FROM Products;
+    • MAX 
+The MAX() function returns the largest value of the selected column.
+SELECT MAX(Price) AS LargestPrice
+FROM Products;
+SELECT MAX(column_name)
+FROM table_name
+WHERE condition;
+
+   • MIN 
+The MIN() function returns the smallest value of the selected column.
+SELECT MIN(column_name)
+FROM table_name
+WHERE condition;
+SELECT MIN(Price) AS SmallestPrice
+FROM Products;
+
+    • SUM
+
+The following SQL statement finds the sum of the "Quantity" fields in the "OrderDetails" table:
+SELECT SUM(Quantity)
+FROM OrderDetails;
+ 
+   • CUBE 
+
+CUBE is an extension of the GROUP BY clause.  In addition, the CUBE extension will generate subtotals for all combinations of grouping columns specified in the GROUP BY clause.
+
+Comment
+Single line comment –
+Multiple line comment /*jkndfjndjf*/
+
+
+6. Practical Based on implementing all String functions. 
+
+•	CONCAT function is used to concatenate two strings to form a single string.
+            The CONCAT() function adds two or more strings together.
+                   SELECT CONCAT(' Ajay ', ' _Surwade');
+The + operator allows you to add two or more strings together.
+      SELECT 'Master’+ ‘in’+ ‘Computer’+ ‘Science’;
+The CONCAT_WS() function adds two or more strings together with a separator. 
+SELECT CONCAT_WS('*', 'Master', ' Computer', ' Science'); 
+•	The UPPER() function converts a string to upper-case.
+            SELECT UPPER('Master in Computer Sceince’);
+•	The LOWER() function converts a string to lower-case.
+            SELECT UPPER('Master in COMPUTER SCIENCE’);
+•	The TRIM() function removes the space character OR other specified characters from the start or end of a string. By default, the TRIM() function removes leading and trailing spaces from a string.
+SELECT TRIM('#! ' FROM '    #Computer Science&     ')
+•	The LTRIM() function removes leading spaces from a string.
+SELECT LTRIM( '          Computer Science&        ')
+•	The RTRIM() function removes trailing spaces from a string.
+SELECT RTRIM( '          Computer Science&       Ajay     ')
+•	The REVERSE() function reverses a string and returns the result.
+SELECT REVERSE(CustomerName)
+            FROM Customers;
+
+•	The SUBSTRING() function extracts some characters from a string.
+SUBSTRING(string, start, length)
+string:The string to extract from,
+start : The start position. The first position
+length : The number of characters to extract
+
+SELECT SUBSTRING('CustomerName', 5, 5)
+
+•	The REPLACE() function replaces all occurrences of a substring within a string, with a new substring.
+REPLACE(string, old_string, new_string)
+SELECT REPLACE('Ajay Surwade ', 'A', 'S');
+
+7. Practical Based on implementing Date and Time Functions. 
+SQL Server comes with the following data types for storing a date or a date/time value in the database:
+•	DATE - format YYYY-MM-DD
+•	DATETIME - format: YYYY-MM-DD HH:MI:SS
+•	SMALLDATETIME - format: YYYY-MM-DD HH:MI:SS
+•	TIMESTAMP - format: a unique number
+
+8. Practical Based on implementing use of UNION, INTERSECTION, SET DIFFERENCE. 
+•	The SQL UNION Operator: The UNION operator is used to combine the result-set of two or more SELECT statements.
+Every SELECT statement within UNION must have the same number of columns
+The columns must also have similar data types
+The columns in every SELECT statement must also be in the same order
+      SELECT column_name(s) FROM table1
+      UNION
+      SELECT column_name(s) FROM table2;
+            
+             The UNION operator selects only distinct values by default. To allow duplicate values,     
+              use UNION ALL:
+SELECT column_name(s) FROM table1
+      UNION ALL
+      SELECT column_name(s) FROM table2;
+
+Examples:
+SELECT City FROM Customers
+UNION
+SELECT City FROM Suppliers
+ORDER BY City;
+
+SELECT City FROM Customers
+UNION ALL
+SELECT City FROM Suppliers
+ORDER BY City;
+
+Another Example:
+SELECT City, Country FROM Customers
+WHERE Country='Germany'
+UNION
+SELECT City, Country FROM Suppliers
+WHERE Country='Germany'
+ORDER BY City;
+
+SELECT 'Customer' AS Type, ContactName, City, Country
+FROM Customers
+UNION
+SELECT 'Supplier', ContactName, City, Country
+FROM Suppliers;
+
+The SQL INSERT INTO SELECT Statement
+The INSERT INTO SELECT statement copies data from one table and inserts it into another table. The INSERT INTO SELECT statement requires that the data types in source and target tables matches. The existing records in the target table are unaffected.
+INSERT INTO table2
+SELECT * FROM table1
+WHERE condition;
+
+INSERT INTO Customers (CustomerName, City, Country)
+SELECT SupplierName, City, Country FROM Suppliers;
+
+9. Implement Nested Queries & all types of JOIN operation. 
+10. Practical Based on performing different operations on a view. 
+11. Practical Based on implementing use of Procedures. 
+12. Practical Based on implementing use of Triggers 
+13. Practical Based on implementing Cursor. 
+14. ++++VB.NET, C#.NET, JAVA, D2K, etc. 
+15. Practical based on creating Data Reports. 
+16. Design entity relationship models for a business problem and develop a normalized database structure 
+
+Course Outcome: 
+After successful completion of this course, students will be able to 
+1.To understand Database design methodology. 
+2.Acquire knowledge in fundamentals of Database Management System. 
+3.Work with popular Database languages. 
+4.Realise various data models for Database and Write queries in SQL. 
+5. Familiar with basic database storage structures and access techniques. 
+
+
+
+
